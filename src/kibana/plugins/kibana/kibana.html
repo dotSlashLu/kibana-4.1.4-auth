@@ -20,6 +20,9 @@
         <li ng-repeat="app in apps.inOrder | filter:{show: true}" ng-class="{active: activeApp === app}">
           <a ng-href="#{{app === activeApp ? app.rootPath : app.lastPath}}" bo-text="app.name"></a>
         </li>
+        <li>
+          <a ng-click="logout()">Logout</a>
+        </li>
       </ul>
 
       <ul ng-if="setupComplete" ng-show="timefilter.enabled" class="nav navbar-nav navbar-right navbar-timepicker">

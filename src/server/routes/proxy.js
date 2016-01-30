@@ -6,6 +6,7 @@ var express = require('express');
 var _ = require('lodash');
 var fs = require('fs');
 var url = require('url');
+var util = require('util');
 var join = require('path').join;
 var logger = require('../lib/logger');
 var validateRequest = require('../lib/validateRequest');
@@ -48,14 +49,19 @@ function getPort(req) {
 // Create the proxy middleware
 router.use(function (req, res, next) {
   var uri = _.defaults({}, router.proxyTarget);
+  if (config.kibana.kibana_elasticsearch_username && config.kibana.kibana_elasticsearch_password) {
+    uri.auth = util.format('%s:%s', config.kibana.kibana_elasticsearch_username, config.kibana.kibana_elasticsearch_password);
+  }
 
   // Add a slash to the end of the URL so resolve doesn't remove it.
   var path = (/\/$/.test(uri.path)) ? uri.path : uri.path + '/';
   path = url.resolve(path, '.' + req.url);
 
-  if (uri.auth) {
+  // @lu: only use configured authentication when auth header is not given
+  if (uri.auth && !req.headers.authorization) {
     var auth = new Buffer(uri.auth);
     req.headers.authorization = 'Basic ' + auth.toString('base64');
+    console.log("Use default auth");
   }
 
   var options = {

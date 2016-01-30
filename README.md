@@ -1,45 +1,23 @@
-# Kibana 4.1.4
+# Kibana 4.1.4 with Authentication
 
-[![Build Status](https://travis-ci.org/elastic/kibana.svg?branch=master)](https://travis-ci.org/elastic/kibana?branch=master)
+This is a fork of [elastic/kibana](https://github.com/elastic/kibana) with an authentication page. For introductions of Kibana, please refer to the original repository.
 
-Kibana is an open source ([Apache Licensed](https://github.com/elastic/kibana/blob/master/LICENSE.md)), browser based analytics and search dashboard for Elasticsearch. Kibana is a snap to setup and start using. Kibana strives to be easy to get started with, while also being flexible and powerful, just like Elasticsearch.
+Kibana and Elasticsearch's lack of the ability of authentication has post great danger to sensitive data. This fork adds a login page for kibana to eliminate unauthorized requests.
 
-## Requirements
+Please be reminded that, this login page only protects your kibana web client, people are still able to access your elasticsearch without control via kibana proxy: `localhost:5601/elasticsearch`. If you want to protect your elasticsearch, please have a look at [search-guard](https://github.com/dotSlashLu/search-guard) which is a plugin for elasticsearch providing fine-grained acl control.
 
-- Elasticsearch version 1.4.4 or later
-- Kibana binary package
+## Authentication
 
-## Installation
+To use the authentication feature, the following entries must be configured in the `kibana.yml`:
+```yml
+# account for kibana, which should only has the accessibility of the .kibana index
+kibana_elasticsearch_username: username
+kibana_elasticsearch_password: password
+# ldap API for authentication
+# this API should accept url parameters name and password
+# you can customize this easily in src/server/routes/auth/login.js
+ldap_api: "localhost/ldap.php"
+```
 
-* Download: [http://www.elastic.co/downloads/kibana](http://www.elastic.co/downloads/kibana)
-* Run `bin/kibana` on unix, or `bin\kibana.bat` on Windows.
-* Visit [http://localhost:5601](http://localhost:5601)
-
-## Quick Start
-
-You're up and running! Fantastic! Kibana is now running on port 5601, so point your browser at http://YOURDOMAIN.com:5601.
-
-The first screen you arrive at will ask you to configure an **index pattern**. An index pattern describes to Kibana how to access your data. We make the guess that you're working with log data, and we hope (because it's awesome) that you're working with Logstash. By default, we fill in `logstash-*` as your index pattern, thus the only thing you need to do is select which field contains the timestamp you'd like to use. Kibana reads your Elasticsearch mapping to find your time fields - select one from the list and hit *Create*.
-
-**Tip:** there's an optimization in the way of the *Use event times to create index names* option. Since Logstash creates an index every day, Kibana uses that fact to only search indices that could possibly contain data in your selected time range.
-
-Congratulations, you have an index pattern! You should now be looking at a paginated list of the fields in your index or indices, as well as some informative data about them. Kibana has automatically set this new index pattern as your default index pattern. If you'd like to know more about index patterns, pop into to the [Settings](#settings) section of the documentation.
-
-**Did you know:** Both *indices* and *indexes* are acceptable plural forms of the word *index*. Knowledge is power.
-
-Now that you've configured an index pattern, you're ready to hop over to the [Discover](#discover) screen and try out a few searches. Click on **Discover** in the navigation bar at the top of the screen.
-
-## Documentation
-
-Visit [Elastic.co](http://www.elastic.co/guide/en/kibana/current/index.html) for the full Kibana documentation.
-
-## Snapshot Builds
-
-For the daring, snapshot builds are available. These builds are created after each commit to the master branch, and therefore are not something you should run in production.
-
-| platform |  |  |
-| --- | --- | --- |
-| OSX | [tar](http://download.elastic.co/kibana/kibana/kibana-4.1.4-darwin-x64.tar.gz) | [zip](http://download.elastic.co/kibana/kibana/kibana-4.1.4-darwin-x64.zip) |
-| Linux x64 | [tar](http://download.elastic.co/kibana/kibana/kibana-4.1.4-linux-x64.tar.gz) | [zip](http://download.elastic.co/kibana/kibana/kibana-4.1.4-linux-x64.zip) |
-| Linux x86 | [tar](http://download.elastic.co/kibana/kibana/kibana-4.1.4-linux-x86.tar.gz) | [zip](http://download.elastic.co/kibana/kibana/kibana-4.1.4-linux-x86.zip) |
-| Windows | [tar](http://download.elastic.co/kibana/kibana/kibana-4.1.4-windows.tar.gz) | [zip](http://download.elastic.co/kibana/kibana/kibana-4.1.4-windows.zip) |
+## Roadmap
+Though users and/or groups to lists ACLs can be controlled by search-guard, but they are still listed on the kibana page, clicking the index as an unauthorized user would lead to an error. This might be improved by removing unauthorized indecies from kibana in future release.

@@ -24,6 +24,8 @@ define(function (require) {
   require('directives/paginate');
   require('directives/pretty_duration');
   require('directives/rows');
+  // @lu: authorization
+  require('plugins/auth/services/auth');
 
   var Notifier = require('components/notify/_notifier');
 
@@ -47,7 +49,21 @@ define(function (require) {
       };
     });
   })
-  .directive('kibana', function (Private, $rootScope, $injector, Promise, config, kbnSetup) {
+  .constant('AUTH_EVENTS', {
+    loginSuccess: 'auth-login-success',
+    loginFailed: 'auth-login-failed',
+    logoutSuccess: 'auth-logout-success',
+    sessionTimeout: 'auth-session-timeout',
+    notAuthenticated: 'auth-not-authenticated',
+    notAuthorized: 'auth-not-authorized'
+  })
+  .constant('USER_ROLES', {
+    all: '*',
+    admin: 'admin',
+    editor: 'editor',
+    guest: 'guest'
+  })
+  .directive('kibana', function (Private, $rootScope, $injector, Promise, config, kbnSetup, USER_ROLES, AuthService) {
     return {
       template: require('text!plugins/kibana/kibana.html'),
       controllerAs: 'kibana',
@@ -73,6 +89,17 @@ define(function (require) {
 
           $scope.setupComplete = true;
         });
+
+        // @lu: auth
+        $scope.currentUser = null;
+        $scope.userRoles = USER_ROLES;
+        $scope.isAuthorized = AuthService.isAuthorized;
+        $scope.setCurrentUser = function (user) {
+          $scope.currentUser = user;
+        };
+        $scope.logout = function() {
+          AuthService.logout();
+        }
       }
     };
   });

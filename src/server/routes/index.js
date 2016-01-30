@@ -15,4 +15,6 @@ router.get('/config', function (req, res, next) {
   res.json(data);
 });
 
+router.use('/auth', require("./auth/index"));
+
 module.exports = router;
