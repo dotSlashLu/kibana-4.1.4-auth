@@ -6,12 +6,11 @@ request = Promise.promisifyAll(request);
 
 module.exports = function(req, res, next) {
   var api = config.kibana.ldap_api;
+
   request
-  .get(api)
-  .query({
-    name: req.body.username,
-    passwd: decodeURIComponent(req.body.password)
-  })
+  .post(api)
+  .send('name=' + req.body.username)
+  .send('passwd=' + req.body.password)
   .endAsync(function(error, ret) {
     if (!ret || !ret.text)
       return res.sendStatus(403);

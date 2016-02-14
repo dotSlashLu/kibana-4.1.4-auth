@@ -1,6 +1,6 @@
 define(function(require) {
-  var module = require('modules').get('apps/auth');
   var angular = require('angular');
+  var module = require('modules').get('apps/auth');
   var Notifier = require('components/notify/_notifier');
   require("plugins/auth/services/session")
 
@@ -10,11 +10,13 @@ define(function(require) {
     authService.login = function(credentials) {
       return $http.post('/auth/login', credentials)
         .then(function(res) {
-          Session.create(res.data.sid, res.data.user.id,
-            res.data.user.role);
           // set http header
           var authdata = Base64.encode(credentials.username + ':' + credentials.password);
           $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata;
+
+          Session.create(res.data.sid, res.data.user.id,
+            res.data.user.role, authdata);
+          Session.set_cookie();
           return res.data.user;
         })
         .catch(function(err) {
@@ -43,6 +45,7 @@ define(function(require) {
     return authService;
   });
 });
+
 
 
 var Base64 = {

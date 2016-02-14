@@ -94,6 +94,7 @@ define(function (require) {
         $scope.currentUser = null;
         $scope.userRoles = USER_ROLES;
         $scope.isAuthorized = AuthService.isAuthorized;
+        console.log($scope.isAuthorized())
         $scope.setCurrentUser = function (user) {
           $scope.currentUser = user;
         };

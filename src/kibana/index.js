@@ -13,13 +13,6 @@ define(function (require) {
   require('angular-bindonce');
 
   var configFile = JSON.parse(require('text!config'));
-  // @lu
-  var privatePlugins = [
-    'plugins/auth/index'
-  ];
-  _.each(privatePlugins, function(p) {
-    configFile.plugins.push(p);
-  })
 
   var kibana = modules.get('kibana', [
     // list external requirements here
