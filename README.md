@@ -17,6 +17,12 @@ kibana_elasticsearch_password: password
 # this API should accept url parameters name and password
 # you can customize this easily in src/server/routes/auth/login.js
 ldap_api: "localhost/ldap.php"
+
+# session settings
+# session secret, used to generate session ID
+session_secret: "keyboard cat"
+# session max age, default is one week
+session_cookie_max_age: 604800
 ```
 
 ## Security Warning

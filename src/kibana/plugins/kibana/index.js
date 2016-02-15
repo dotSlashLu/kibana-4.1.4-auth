@@ -1,6 +1,7 @@
 define(function (require) {
   // base angular components/directives we expect to be loaded
   require('angular-bootstrap');
+  require('angular-cookies');
   require('services/private');
   require('components/config/config');
   require('components/courier/courier');
@@ -31,7 +32,7 @@ define(function (require) {
 
   // ensure that the kibana module requires ui.bootstrap
   require('modules')
-  .get('kibana', ['ui.bootstrap'])
+  .get('kibana', ['ui.bootstrap', 'ngCookies'])
   .config(function ($tooltipProvider, $httpProvider, configFile) {
     $tooltipProvider.setTriggers({ 'mouseenter': 'mouseleave click' });
     $httpProvider.interceptors.push(function () {
@@ -94,7 +95,6 @@ define(function (require) {
         $scope.currentUser = null;
         $scope.userRoles = USER_ROLES;
         $scope.isAuthorized = AuthService.isAuthorized;
-        console.log($scope.isAuthorized())
         $scope.setCurrentUser = function (user) {
           $scope.currentUser = user;
         };

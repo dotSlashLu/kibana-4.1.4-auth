@@ -27,9 +27,14 @@ define(function (require) {
     $scope.apps.forEach(assignPaths);
     $scope.apps.forEach(getShow);
 
+    // function onLocChangeStart($e, next, cur) {
+    //
+    // }
+    // $scope.$on("$locationChangeStart", onLocChangeStart);
 
-    function onRouteChange() {
+    function onRouteChange($e, current, prev) {
       // @lu: redirect unauthorized req
+      console.log(AuthService.isAuthenticated());
       if (!AuthService.isAuthenticated() && $location.path() !== '/auth')
         $location.path('/auth');
       var route = $location.path().split(/\//);

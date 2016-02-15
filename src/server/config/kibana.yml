@@ -67,6 +67,14 @@ verify_ssl: true
 # and required if you want to execute requests from other clients (like curl).
 # xsrf_token: ""
 
+#
+# Kibana-auth specific settings
+#
+
 # ldap api used for authentication
 ldap_api: "localhost/ldap.php"
 
+# session secret
+session_secret: "keyboard cat"
+# session max age, default is one week
+session_cookie_max_age: 604800

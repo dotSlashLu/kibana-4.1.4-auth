@@ -58,10 +58,9 @@ router.use(function (req, res, next) {
   path = url.resolve(path, '.' + req.url);
 
   // @lu: only use configured authentication when auth header is not given
-  if (uri.auth && !req.headers.authorization) {
+  if (uri.auth && !req.session.authHeader) {
     var auth = new Buffer(uri.auth);
     req.headers.authorization = 'Basic ' + auth.toString('base64');
-    console.log("Use default auth");
   }
 
   var options = {
@@ -72,6 +71,9 @@ router.use(function (req, res, next) {
     strictSSL: config.kibana.verify_ssl,
     timeout: config.request_timeout
   };
+
+  if (req.session.authHeader)
+    options.headers['Authorization'] = req.session.authHeader;
 
   options.headers['x-forward-for'] = req.connection.remoteAddress || req.socket.remoteAddress;
   options.headers['x-forward-port'] = getPort(req);

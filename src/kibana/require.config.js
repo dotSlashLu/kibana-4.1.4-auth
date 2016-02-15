@@ -14,6 +14,7 @@ require.config({
     'angular-elastic': 'bower_components/angular-elastic/elastic',
     'angular-route': 'bower_components/angular-route/angular-route',
     'angular-ui-ace': 'bower_components/angular-ui-ace/ui-ace',
+    'angular-cookies': 'bower_components/angular-cookies/angular-cookies',
     ace: 'bower_components/ace-builds/src-noconflict/ace',
     'ace-json': 'bower_components/ace-builds/src-noconflict/mode-json',
     angular: 'bower_components/angular/angular',

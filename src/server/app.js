@@ -1,6 +1,7 @@
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
+var session = require('express-session');
 var requestLogger = require('./lib/requestLogger');
 var auth = require('./lib/auth');
 var xsrf = require('./lib/xsrf');
@@ -15,6 +16,13 @@ var proxy = require('./routes/proxy');
 
 var app = express();
 
+// session setup
+app.use(session({
+  secret: config.kibana.session_secret,
+  cookie: {
+    maxAge: config.kibana.session_cookie_max_age * 1000
+  }
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

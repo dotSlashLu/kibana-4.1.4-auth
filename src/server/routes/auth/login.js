@@ -1,4 +1,3 @@
-var path = require("path");
 var config = require("../../config/");
 var request = require("superagent");
 var Promise = require("bluebird");
@@ -17,8 +16,18 @@ module.exports = function(req, res, next) {
     ret = JSON.parse(ret.text);
     if (ret.status == -1)
       return res.sendStatus(403);
+    var authStr = new Buffer(req.body.username + ":" + req.body.password).toString("base64");
+    req.session.authHeader = "Basic " + authStr;
+
+    // @lu: no danger using cookies here,
+    // we authorize users in the backend,
+    // this is just for UI
+    res.cookie("authenticated", 1, {
+      expires: new Date(Date.now() + config.kibana.session_cookie_max_age * 1000)
+    });
     res.json({
-      sid: 1,
+      // @lu: all fields are reserved for future authorization feature
+      // now we just do simple authentication
       user: {
         id: 1,
         role: []

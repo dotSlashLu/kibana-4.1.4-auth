@@ -7,11 +7,17 @@ define(function (require) {
     template: require('text!plugins/auth/templates/index.html')
   })
 
-  app.controller('LoginController', function ($scope, $rootScope, $location, AUTH_EVENTS, AuthService, Session) {
+  app.controller('LoginController', function ($scope,
+                                              $window,
+                                              $rootScope,
+                                              $location,
+                                              AUTH_EVENTS,
+                                              AuthService,
+                                              Session) {
     // @lu: if we have session stored in the cookie
     // restore session and redirect
-    if (Session.get()) {
-      $scope.setCurrentUser(user);
+    if (Session.check()) {
+      // $scope.setCurrentUser(user);
       $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
       redirect();
       return ;
@@ -36,7 +42,8 @@ define(function (require) {
       var prevUrl = '/';
       if (history.length > 1)
         history.go(-1);
-      $location.path(prevUrl);
+      else
+        $location.path(prevUrl);
     }
   });
 });
