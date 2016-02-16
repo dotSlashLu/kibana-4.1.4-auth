@@ -5,7 +5,7 @@ port: 5601
 host: "0.0.0.0"
 
 # The Elasticsearch instance to use for all your queries.
-elasticsearch_url: "http://10.3.155.97:9200"
+elasticsearch_url: "http://localhost:9200"
 
 # preserve_elasticsearch_host true will send the hostname specified in `elasticsearch`. If you set it to false,
 # then the host you use to connect to *this* Kibana instance will be sent.
@@ -19,8 +19,8 @@ kibana_index: ".kibana"
 # used by the Kibana server to perform maintence on the kibana_index at statup. Your Kibana
 # users will still need to authenticate with Elasticsearch (which is proxied thorugh
 # the Kibana server)
-kibana_elasticsearch_username: kibana
-kibana_elasticsearch_password: redhat
+kibana_elasticsearch_username: username
+kibana_elasticsearch_password: password
 
 # If your Elasticsearch requires client certificate and key
 # kibana_elasticsearch_client_crt: /path/to/your/client.crt
@@ -72,7 +72,7 @@ verify_ssl: true
 #
 
 # ldap api used for authentication
-ldap_api: "http://172.16.3.92:9999/ldap.php"
+ldap_api: "localhost/ldap.php"
 
 # session secret
 session_secret: "keyboard cat"

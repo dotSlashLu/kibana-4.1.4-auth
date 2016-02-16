@@ -4,6 +4,8 @@ This is a fork of [elastic/kibana](https://github.com/elastic/kibana) with an au
 
 Kibana and Elasticsearch's lacking of the ability of authentication has post great danger to sensitive data. This fork adds a login page for kibana to eliminate unauthorized requests.
 
+Current release: 0.0.1-beta2. [中文简介](http://blog.lotuslab.org/post/139361133998/%E6%89%93%E9%80%A0%E5%AE%89%E5%85%A8%E7%9A%84elk).
+
 
 ## Authentication
 
