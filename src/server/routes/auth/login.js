@@ -9,7 +9,7 @@ module.exports = function(req, res, next) {
   request
   .post(api)
   .send('name=' + req.body.username)
-  .send('passwd=' + req.body.password)
+  .send('passwd=' + encodeURIComponent(req.body.password))
   .endAsync(function(error, ret) {
     if (!ret || !ret.text)
       return res.sendStatus(403);
