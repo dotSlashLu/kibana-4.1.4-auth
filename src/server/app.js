@@ -6,7 +6,6 @@ var requestLogger = require('./lib/requestLogger');
 var auth = require('./lib/auth');
 var xsrf = require('./lib/xsrf');
 var appHeaders = require('./lib/appHeaders');
-var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var compression = require('compression');
 var config = require('./config');
@@ -20,6 +19,7 @@ var app = express();
 app.use(session({
   secret: config.kibana.session_secret,
   cookie: {
+    httpOnly: false,
     maxAge: config.kibana.session_cookie_max_age * 1000
   }
 }));
@@ -46,7 +46,6 @@ app.use('/elasticsearch', proxy);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(compression());
 app.use(express.static(config.public_folder));
 if (config.external_plugins_folder) app.use('/plugins', express.static(config.external_plugins_folder));

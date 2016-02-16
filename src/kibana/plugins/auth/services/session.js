@@ -5,7 +5,7 @@ define(function (require) {
   module.service('Session', function ($http, $cookies, $document) {
 
     this.check = function() {
-      if ($cookies.authenticated) {
+      if ($cookies.authenticated == 1) {
         this.authenticated = true;
         return true;
       }
@@ -16,13 +16,16 @@ define(function (require) {
       this.id = sessionId;
       this.userId = userId;
       this.userRole = userRole;
+      this.authenticated = true;
     };
 
     this.destroy = function () {
+      var s = this;
       return $http.get("/auth/logout")
       .then(function(){
-        $cookies["connect.sid"] = "";
-        $cookies["authenticated"] = "";
+        s.authenticated = false;
+        delete $cookies["connect.sid"];
+        delete $cookies["authenticated"];
       })
     };
   });

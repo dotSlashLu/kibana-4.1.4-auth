@@ -60,7 +60,7 @@ router.use(function (req, res, next) {
   // @lu: only use configured authentication when auth header is not given
   if (uri.auth && !req.session.authHeader) {
     var auth = new Buffer(uri.auth);
-    req.headers.authorization = 'Basic ' + auth.toString('base64');
+    req.headers.Authorization = 'Basic ' + auth.toString('base64');
   }
 
   var options = {

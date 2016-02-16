@@ -8,9 +8,14 @@ define(function(require) {
     var authService = {};
     var notify = new Notifier({ location: 'Kibana' });
 
+    authService.init = function() {
+      Session.check();
+    }
+
     authService.login = function(credentials) {
       return $http.post('/auth/login', credentials)
         .then(function(res) {
+          Session.authenticated = true;
           return res.data.user;
         })
         .catch(function(err) {

@@ -1,7 +1,15 @@
 define(function (require) {
   require("plugins/auth/services/auth");
-  return function KbnControllerApps(Private, $rootScope, $scope, $location, globalState, sessionStorage, AuthService, $location) {
+  return function KbnControllerApps(Private,
+                                    $rootScope,
+                                    $scope,
+                                    $location,
+                                    globalState,
+                                    sessionStorage,
+                                    AuthService,
+                                    $location) {
     var _ = require('lodash');
+    AuthService.init();
 
     function appKey(app) {
       return 'lastPath:' + app.id;
@@ -34,7 +42,6 @@ define(function (require) {
 
     function onRouteChange($e, current, prev) {
       // @lu: redirect unauthorized req
-      console.log(AuthService.isAuthenticated());
       if (!AuthService.isAuthenticated() && $location.path() !== '/auth')
         $location.path('/auth');
       var route = $location.path().split(/\//);

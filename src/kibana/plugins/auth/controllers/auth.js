@@ -9,6 +9,7 @@ define(function (require) {
 
   app.controller('LoginController', function ($scope,
                                               $window,
+                                              $document,
                                               $rootScope,
                                               $location,
                                               AUTH_EVENTS,
@@ -39,11 +40,10 @@ define(function (require) {
     }
 
     function redirect() {
+      // @lu: this might be improved by remembering the last URI
+      // before redirecting
       var prevUrl = '/';
-      if (history.length > 1)
-        history.go(-1);
-      else
-        $location.path(prevUrl);
+      $location.path(prevUrl);
     }
   });
 });
